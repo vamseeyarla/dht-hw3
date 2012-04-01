@@ -24,6 +24,7 @@ import rice.pastry.standard.RandomNodeIdFactory;
  *
  */
 public class NodeFactory {
+	
 	Environment env;
 	NodeIdFactory nidFactory;
 	SocketPastryNodeFactory factory;
@@ -108,4 +109,5 @@ public class NodeFactory {
 		//rice.pastry.Id keyId = new rice.pastry.Id(shaDigest);
 		return Id.build(shaDigest);
 	}
+	
 }
