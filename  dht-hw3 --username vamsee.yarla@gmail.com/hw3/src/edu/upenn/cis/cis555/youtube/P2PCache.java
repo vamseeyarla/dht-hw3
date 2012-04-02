@@ -12,9 +12,15 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketAddress;
 
+import rice.p2p.commonapi.Application;
+import rice.p2p.commonapi.Endpoint;
+import rice.p2p.commonapi.Id;
+import rice.p2p.commonapi.Message;
 import rice.p2p.commonapi.Node;
+import rice.p2p.commonapi.NodeHandle;
+import rice.p2p.commonapi.RouteMessage;
 
-public class P2PCache {
+public class P2PCache implements Application {
 
 	 	int Local_Port = 0;
 		String IP_Boot_Pastry = null;
@@ -24,6 +30,8 @@ public class P2PCache {
 		Node node = null;
 		NodeEndConnection listen=null;
 	    byte[] bytes;
+	    Endpoint endpoint;
+	    NodeFactory node_factory;
 		
 	/**
 	 * @param args
@@ -82,8 +90,11 @@ public class P2PCache {
 	 try{
 		 
 		  InetSocketAddress sockaddress=new InetSocketAddress(Inet4Address.getByAddress(bytes),Port_Boot_Pastry);
-		  NodeFactory node_factory=new NodeFactory(Local_Port,sockaddress);
+		  node_factory=new NodeFactory(Local_Port,sockaddress);
 		  node = node_factory.getNode();
+		 
+		  endpoint=node.buildEndpoint(this, "PASTRY NODE");
+		  endpoint.register();
 		  
 	 	}
 	 catch(Exception e)
@@ -131,5 +142,64 @@ public class P2PCache {
 		nodeMainClass.daemonStart();
 		System.out.println("Node Started!");
 		System.out.println("Ready for Service!");
+		
+		nodeMainClass.pingPongService();
+	}
+
+	
+	public void pingPongService()
+	{
+		while(true)
+		{
+			try {
+				Thread.sleep(3000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			Id temp=node_factory.nidFactory.generateNodeId();
+			System.out.println("Sending PING to "+temp);
+			sendMessage(temp,null,"PING",true);
+		}
+	}
+	
+	public void sendMessage(Id idToSendTo, NodeHandle nodeHandle, String msgToSend,boolean wantResponse)
+	{
+		MessageFrame msg=new MessageFrame(node.getLocalNodeHandle(),msgToSend,wantResponse);
+		endpoint.route(idToSendTo, msg, nodeHandle);
+	}
+
+	@Override
+	public void deliver(Id id, Message msgx) {
+		
+		MessageFrame msg=(MessageFrame) msgx;
+		if(msg.msg.equals("PING"))
+		{
+		System.out.println("Received PING to ID "+id+" from node "+msg.nodeHandle+"; returning PONG");
+		if(msg.wantResponse)
+		{
+			sendMessage(null,msg.nodeHandle,"PONG",false);
+		}
+		}
+		else if(msg.msg.equals("PONG"))
+		{
+			System.out.println("Received PONG from node "+msg.nodeHandle);
+		}
+		
+	}
+
+
+	@Override
+	public boolean forward(RouteMessage arg0) {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+
+	@Override
+	public void update(NodeHandle arg0, boolean arg1) {
+		// TODO Auto-generated method stub
+		
 	}
 }
