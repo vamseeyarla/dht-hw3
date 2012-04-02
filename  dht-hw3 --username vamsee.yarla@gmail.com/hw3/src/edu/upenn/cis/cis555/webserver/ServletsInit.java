@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServlet;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+
+
 import org.apache.log4j.Logger;
 import org.xml.sax.Attributes;
 
@@ -29,6 +31,7 @@ public class ServletsInit {
 	//HANDLER TO PARSE XML USING FNITE STATE MODEL AND SLPIT ELEMNTS
 	static class Handler extends DefaultHandler {
 		public void startElement(String uri, String localName, String qName, Attributes attributes) {
+			
 			if (qName.compareTo("servlet-name") == 0) {
 				m_state = 1;
 			} else if (qName.compareTo("servlet-class") == 0) {
@@ -117,6 +120,8 @@ public class ServletsInit {
 			System.exit(-1);
 		}
 		SAXParser parser = SAXParserFactory.newInstance().newSAXParser();
+	    
+	
 		parser.parse(file, h);
 		
 		return h;
@@ -175,6 +180,9 @@ try{
 	//	System.out.println("TRACK3");
 		status=true;
 	//	System.out.println("DONE LAODING SERVLETS");
+		
+	//	System.out.println(servlets);
+	//	System.out.println(mappings);
 	}
 	
 	catch(Exception e)

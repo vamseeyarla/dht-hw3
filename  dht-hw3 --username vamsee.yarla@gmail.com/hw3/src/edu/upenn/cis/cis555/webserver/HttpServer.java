@@ -97,7 +97,7 @@ public class HttpServer implements Runnable {
             	 {
             		 xml=xml.substring(0, xml.length()-1);
             	 }
-            	 System.out.println(xml);
+            	
             	 System.out.println("Servlets Intialized");  
             	 System.out.println("Open for Client Requests");
             } 
