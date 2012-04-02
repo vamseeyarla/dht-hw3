@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!DOCTYPE web-app 
+    PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN" 
+    "http://java.sun.com/dtd/web-app_2_3.dtd">
+
+
+<web-app>
+vamsee
+    <display-name>Crawler Servlets</display-name>
+	<description name="manoj">
+	cis
+	<mail>
+	vamsee.yarla@gmail.com
+	<description name="vasu">
+	seas
+	<mail>
+	vamsee.yarla@gmail.com
+
+	</mail>
+	</description>
+	</mail>
+	
+	<wonder vamsee="krish"> 
+	gmail
+	</wonder>
+	
+	</description>
+    <description>
+    Some servlets for the web crawler
+	<mail>
+	vamsee.yarla@gmail.com
+	</mail>
+    </description>
+<mail>
+gmail
+</mail>
+
+    <context-param>
+      <param-name>webmaster</param-name>
+      <param-value>vamsee@seas.upenn.edu</param-value>
+      <description>
+        The EMAIL address of the administrator to whom questions
+        and comments about this application should be addressed.
+      </description>
+    </context-param>
+
+	 <context-param>
+      <param-name>BDBstore</param-name>
+      <param-value>JEDB</param-value>
+      <description>
+        The Berkeley DB Location.
+      </description>
+    </context-param>
+    
+     <context-param>
+      <param-name>cacheServer</param-name>
+      <param-value>165.123.63.201</param-value>
+      <description>
+        Cache Server Port
+      </description>
+    </context-param>
+	
+	  <context-param>
+      <param-name>cacheServerPort</param-name>
+      <param-value>6789</param-value>
+      <description>
+        Cache Server Port
+      </description>
+    </context-param>
+	
+    <servlet>
+      <servlet-name>youtube</servlet-name>
+      <description>
+        This is a simple demonstration servlet.
+      </description>
+      <servlet-class>edu.upenn.cis.cis555.youtube.YouTubeSearch</servlet-class>
+      <load-on-startup/>
+    </servlet>
+	
+
+    <servlet-mapping>
+      <servlet-name>youtube</servlet-name>
+      <url-pattern>/youtube</url-pattern>
+    </servlet-mapping>
+	
+
+
+    <session-config>
+      <session-timeout>30</session-timeout>
+    </session-config>
+</web-app>
