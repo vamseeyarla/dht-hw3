@@ -172,9 +172,9 @@ public class P2PCache implements Application {
 		}
 	}
 	
-	public void sendMessage(Id idToSendTo, NodeHandle nodeHandle, String msgToSend,boolean wantResponse)
+	public void sendMessage(Id idToSendTo, NodeHandle nodeHandle, String msgToSend,boolean wantResponse, String msgContent)
 	{
-		MessageFrame msg=new MessageFrame(node.getLocalNodeHandle(),msgToSend,wantResponse);
+		MessageFrame msg=new MessageFrame(node.getLocalNodeHandle(),msgToSend,wantResponse,msgContent);
 		endpoint.route(idToSendTo, msg, nodeHandle);
 	}
 
@@ -187,7 +187,7 @@ public class P2PCache implements Application {
 		System.out.println("Received PING to ID "+id+" from node "+msg.nodeHandle+"; returning PONG");
 		if(msg.wantResponse)
 		{
-			sendMessage(null,msg.nodeHandle,"PONG",false);
+			sendMessage(null,msg.nodeHandle,"PONG",false,null);
 		}
 		}
 		else if(msg.msg.equals("PONG"))
@@ -200,8 +200,10 @@ public class P2PCache implements Application {
 			
 			if(msg.wantResponse)
 			{
+				String content=null;
+			    content=fetchData(msg.msg);
 			System.out.println("REQ: I GOT YOUR MESSAGE: AND YOU ARE: "+msg.nodeHandle);
-			sendMessage(null,msg.nodeHandle,msg.msg,false);
+			sendMessage(null,msg.nodeHandle,msg.msg,false,content);
 			}
 			else
 			{
@@ -215,12 +217,12 @@ public class P2PCache implements Application {
 							OutputStream out=socs.remove(i).getOutputStream();
 							out.write("HTTP/1.1 200 OK\n".getBytes());
 							out.write("Server: P2PServer+DHT\n".getBytes());
-							out.write("Content-Length: 6\n".getBytes());
-							out.write("Content-Type: text/plain\n".getBytes());
+							out.write(("Content-Length: "+msg.msgContent.length()+"\n").getBytes());
+							out.write("Content-Type: text/xml\n".getBytes());
 							out.write("Connection: close\n".getBytes());
 							out.write("\n".getBytes());
 							
-							out.write("Vamsee ".getBytes());
+							out.write(msg.msgContent.getBytes());
 							out.close();
 						}
 						catch(Exception e)
@@ -237,7 +239,22 @@ public class P2PCache implements Application {
 		
 	}
 
-
+    public String fetchData(String keyword)
+    {
+    	if(client.db.checkSearchKeyExists(keyword))
+		{
+			SearchData data=client.db.retrieveData(keyword);
+			return data.Data;
+		}
+    	else
+    	{
+    		String content="vamsee";
+    		//FETCH DATA FROM YOUTUBE API
+    		
+    		client.db.addSearchData(keyword, content);
+    		return content;	
+    	}
+    }
 	
 	@Override
 	public boolean forward(RouteMessage arg0) {
