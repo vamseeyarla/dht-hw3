@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Inet4Address;
@@ -11,6 +12,8 @@ import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketAddress;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import rice.p2p.commonapi.Application;
 import rice.p2p.commonapi.Endpoint;
@@ -32,6 +35,8 @@ public class P2PCache implements Application {
 	    byte[] bytes;
 	    Endpoint endpoint;
 	    NodeFactory node_factory;
+	    HashMap<String,ArrayList<Socket>> query=new HashMap<String, ArrayList<Socket>>();
+	    YouTubeClient client;
 		
 	/**
 	 * @param args
@@ -83,7 +88,8 @@ public class P2PCache implements Application {
 			System.exit(1);
 		}
 		
-	 YouTubeClient client=new YouTubeClient(BDB);
+	 client=new YouTubeClient(BDB);
+	 client.nodeMainClass=this;
 	 
 	 System.out.println("Cleared Validation!");
 	
@@ -152,15 +158,17 @@ public class P2PCache implements Application {
 		while(true)
 		{
 			try {
-				Thread.sleep(3000);
+			//	Thread.sleep(3000);
+				Thread.sleep(300000000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
+			/*
 			Id temp=node_factory.nidFactory.generateNodeId();
 			System.out.println("Sending PING to "+temp);
 			sendMessage(temp,null,"PING",true);
+			*/
 		}
 	}
 	
@@ -186,10 +194,51 @@ public class P2PCache implements Application {
 		{
 			System.out.println("Received PONG from node "+msg.nodeHandle);
 		}
+		else
+		{
+			
+			
+			if(msg.wantResponse)
+			{
+			System.out.println("REQ: I GOT YOUR MESSAGE: AND YOU ARE: "+msg.nodeHandle);
+			sendMessage(null,msg.nodeHandle,msg.msg,false);
+			}
+			else
+			{
+				System.out.println("RES: I GOT YOUR MESSAGE: AND YOU ARE: "+msg.nodeHandle);
+				if(query.containsKey(msg.msg))
+				{
+					ArrayList<Socket> socs=query.remove(msg.msg);
+					for(int i=0;i<socs.size();i++)
+					{
+						try{
+							OutputStream out=socs.remove(i).getOutputStream();
+							out.write("HTTP/1.1 200 OK\n".getBytes());
+							out.write("Server: P2PServer+DHT\n".getBytes());
+							out.write("Content-Length: 6\n".getBytes());
+							out.write("Content-Type: text/plain\n".getBytes());
+							out.write("Connection: close\n".getBytes());
+							out.write("\n".getBytes());
+							
+							out.write("Vamsee ".getBytes());
+							out.close();
+						}
+						catch(Exception e)
+						{
+							System.out.println("Socket Closed!!! Can't help it :(");
+						}
+						
+					}
+					
+				}
+			}
+			
+		}
 		
 	}
 
 
+	
 	@Override
 	public boolean forward(RouteMessage arg0) {
 		// TODO Auto-generated method stub

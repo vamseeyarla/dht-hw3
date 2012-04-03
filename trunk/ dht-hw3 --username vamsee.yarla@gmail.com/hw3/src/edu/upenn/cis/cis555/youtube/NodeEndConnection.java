@@ -6,9 +6,11 @@ package edu.upenn.cis.cis555.youtube;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.URLDecoder;
 
 import rice.p2p.commonapi.Node;
 
@@ -32,12 +34,59 @@ public class NodeEndConnection extends Thread{
 			 {
 			     Socket req=serSocket.accept();
 			     System.out.println("DATA RECEIVED");
-			     System.out.println("Node ID: "+node.getId()+": PING");
+			    
 			     BufferedReader br=new BufferedReader(new InputStreamReader(req.getInputStream()));
 			     
-			     BufferedWriter bw=new BufferedWriter(new OutputStreamWriter(req.getOutputStream()));
-			     bw.write("PONG");   
-			 }
+			     String temp=null;   
+			     if((temp=br.readLine())!=null)
+			     {
+			    	 System.out.println(temp);
+			    	 String split []=new String[3];
+			    	 split=temp.split(" ");
+			    	 split[1]=URLDecoder.decode(split[1]);
+			    	 if(split[1].length()<16 && !split[1].substring(0,16).equalsIgnoreCase("/search?keyword="))
+			    	 {
+			    			OutputStream out=req.getOutputStream();
+							out.write("HTTP/1.1 404 NOTFOUND\n".getBytes());
+							out.write("Server: P2PServer+DHT\n".getBytes());
+							out.write("Content-Length: 6\n".getBytes());
+							out.write("Content-Type: text/plain\n".getBytes());
+							out.write("Connection: close\n".getBytes());
+							out.write("\n".getBytes());
+							
+							out.write("NOT FOUND ".getBytes());
+							
+			    			  req.close();
+			    	 }
+			    	 else
+			    	 {
+			    		 String keyword=split[1].substring(16);
+			    		 System.out.println("KEYWORD: "+keyword);
+			    		 nodeMainClass.client.req=req;
+			    		 nodeMainClass.client.searchVideos(keyword);
+			    		 System.out.println("RETURNED TO DAEMON!");
+			    	 }
+			     }
+			     else
+			     {
+			    		OutputStream out=req.getOutputStream();
+						out.write("HTTP/1.1 404 NOTFOUND\n".getBytes());
+						out.write("Server: P2PServer+DHT\n".getBytes());
+						out.write("Content-Length: 6\n".getBytes());
+						out.write("Content-Type: text/plain\n".getBytes());
+						out.write("Connection: close\n".getBytes());
+						out.write("\n".getBytes());
+						
+						out.write("NOT FOUND ".getBytes());
+						
+		    			  req.close();
+			     }
+			    		 
+			    
+			   
+			     
+			     
+			      }
 			 
 			 }
 			 catch(Exception e)
