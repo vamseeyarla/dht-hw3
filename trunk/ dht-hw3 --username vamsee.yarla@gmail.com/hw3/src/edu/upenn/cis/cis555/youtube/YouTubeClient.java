@@ -28,7 +28,6 @@ DB db;
 	public String searchVideos(String keyword)
 	{
 		
-		
 		if(db.checkSearchKeyExists(keyword))
 		{
 			SearchData data=db.retrieveData(keyword);
