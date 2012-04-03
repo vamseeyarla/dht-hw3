@@ -63,7 +63,23 @@ public class NodeEndConnection extends Thread{
 			    		 String keyword=split[1].substring(16);
 			    		 System.out.println("KEYWORD: "+keyword);
 			    		 nodeMainClass.client.req=req;
-			    		 nodeMainClass.client.searchVideos(keyword);
+			    		 String result=nodeMainClass.client.searchVideos(keyword);
+			    		 if(result==null)
+			    		 {
+			    			 System.out.println("Control Passes to Search!!");
+			    		 }
+			    		 else
+			    		 {
+			    			 	OutputStream out=req.getOutputStream();
+								out.write("HTTP/1.1 200 OK\n".getBytes());
+								out.write("Server: P2PServer+DHT\n".getBytes());
+								out.write(("Content-Length: "+result.length()+"\n").getBytes());
+								out.write("Content-Type: text/xml\n".getBytes());
+								out.write("Connection: close\n".getBytes());
+								out.write("\n".getBytes());
+								out.write(result.getBytes());
+				    			req.close();
+			    		 }
 			    		 System.out.println("RETURNED TO DAEMON!");
 			    	 }
 			     }

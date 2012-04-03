@@ -23,12 +23,14 @@ public class MessageFrame implements Message{
 	public String msg=null;
 	public NodeHandle nodeHandle;
 	public boolean wantResponse=false;
+	public String msgContent;
 	
-	public MessageFrame(NodeHandle nodeHandle, String msg, boolean wantResponse)
+	public MessageFrame(NodeHandle nodeHandle, String msg, boolean wantResponse, String msgContent)
 	{
 		this.nodeHandle=nodeHandle;
 		this.msg=msg;
 		this.wantResponse=wantResponse;
+		this.msgContent=msgContent;
 	}
 
 
