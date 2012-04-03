@@ -44,7 +44,7 @@ public class NodeEndConnection extends Thread{
 			    	 String split []=new String[3];
 			    	 split=temp.split(" ");
 			    	 split[1]=URLDecoder.decode(split[1]);
-			    	 if(split[1].length()<16 && !split[1].substring(0,16).equalsIgnoreCase("/search?keyword="))
+			    	 if(split[1].length()<16 || !split[1].substring(0,16).equalsIgnoreCase("/search?keyword="))
 			    	 {
 			    			OutputStream out=req.getOutputStream();
 							out.write("HTTP/1.1 404 NOTFOUND\n".getBytes());
