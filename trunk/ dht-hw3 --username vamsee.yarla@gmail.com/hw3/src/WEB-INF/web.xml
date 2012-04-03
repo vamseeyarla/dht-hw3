@@ -55,7 +55,7 @@ gmail
     
      <context-param>
       <param-name>cacheServer</param-name>
-      <param-value>"165.123.63.201"</param-value>
+      <param-value>165.123.63.201</param-value>
       <description>
         Cache Server
       </description>
@@ -63,7 +63,7 @@ gmail
 	
 	  <context-param>
       <param-name>cacheServerPort</param-name>
-      <param-value>6789</param-value>
+      <param-value>2222</param-value>
       <description>
         Cache Server Port
       </description>
