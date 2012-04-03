@@ -30,12 +30,13 @@ DB db;
 		
 		if(db.checkSearchKeyExists(keyword))
 		{
+			System.out.println("SEARCH KEY EXISTS");
 			SearchData data=db.retrieveData(keyword);
 			return data.Data;
 		}
 		else
 		{
-		
+			System.out.println("SEARCH KEY NOT EXISTS");
 		if(nodeMainClass.query.containsKey(keyword))
 		{
 			ArrayList<Socket> reqs=nodeMainClass.query.get(keyword);
@@ -49,6 +50,7 @@ DB db;
 			nodeMainClass.query.put(keyword, reqs);
 		}
 		Id temp=nodeMainClass.node_factory.getIdFromString(keyword);
+		System.out.println("GOING TO SEND MSG");
 		nodeMainClass.sendMessage(temp,null,keyword,true,null);
 		
 		return null;

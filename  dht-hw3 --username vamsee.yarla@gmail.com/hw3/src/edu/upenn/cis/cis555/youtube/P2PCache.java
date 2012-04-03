@@ -3,17 +3,24 @@ package edu.upenn.cis.cis555.youtube;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Inet4Address;
 import java.net.InetSocketAddress;
+import java.net.MalformedURLException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketAddress;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import org.apache.tools.ant.taskdefs.Mkdir;
 
 import rice.p2p.commonapi.Application;
 import rice.p2p.commonapi.Endpoint;
@@ -60,7 +67,7 @@ public class P2PCache implements Application {
 			   File x=new File(args[4]);
 			   if(!x.exists())
 			   {
-				   throw new IllegalArgumentException("Bad DB");
+				   x.mkdirs();
 			   }
 			   BDB=args[4];
 			   }
@@ -176,11 +183,13 @@ public class P2PCache implements Application {
 	{
 		MessageFrame msg=new MessageFrame(node.getLocalNodeHandle(),msgToSend,wantResponse,msgContent);
 		endpoint.route(idToSendTo, msg, nodeHandle);
+		System.out.println("MSG SENT TO: "+idToSendTo);
 	}
 
 	@Override
 	public void deliver(Id id, Message msgx) {
 		
+		System.out.println("REACHED DELIVER");
 		MessageFrame msg=(MessageFrame) msgx;
 		if(msg.msg.equals("PING"))
 		{
@@ -197,9 +206,10 @@ public class P2PCache implements Application {
 		else
 		{
 			
-			
+			System.out.println("ENTERED ELSE");
 			if(msg.wantResponse)
 			{
+				System.out.println("ACTUAL PLACE");
 				String content=null;
 			    content=fetchData(msg.msg);
 			System.out.println("REQ: I GOT YOUR MESSAGE: AND YOU ARE: "+msg.nodeHandle);
@@ -250,6 +260,23 @@ public class P2PCache implements Application {
     	{
     		String content="vamsee";
     		//FETCH DATA FROM YOUTUBE API
+    		try {
+			URLConnection connection=new URL("http://gdata.youtube.com/feeds/api/videos?v=1&q="+keyword).openConnection();
+			BufferedReader br=new BufferedReader(new InputStreamReader(connection.getInputStream()));
+			StringBuffer buffer=new StringBuffer();
+			String temp;
+				
+			while((temp=br.readLine())!=null)
+			{
+				buffer.append(temp);
+			}	
+			content=buffer.toString();
+    		System.out.println("CONTENT:   "+content);
+    		} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				content=null;
+			} 
     		
     		client.db.addSearchData(keyword, content);
     		return content;	
