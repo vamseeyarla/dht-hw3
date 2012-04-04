@@ -105,7 +105,7 @@ public class P2PCache implements Application {
 	 client=new YouTubeClient(BDB);
 	 client.nodeMainClass=this;
 	 
-	 System.out.println("Cleared Validation!");
+	 //System.out.println("Cleared Validation!");
 	
 	 try{
 		 
@@ -190,13 +190,13 @@ public class P2PCache implements Application {
 	{
 		MessageFrame msg=new MessageFrame(node.getLocalNodeHandle(),msgToSend,wantResponse,msgContent);
 		endpoint.route(idToSendTo, msg, nodeHandle);
-		System.out.println("MSG SENT TO: "+idToSendTo);
+		//System.out.println("MSG SENT TO: "+idToSendTo);
 	}
 
 	@Override
 	public void deliver(Id id, Message msgx) {
 		
-		System.out.println("REACHED DELIVER");
+		//System.out.println("REACHED DELIVER");
 		MessageFrame msg=(MessageFrame) msgx;
 		if(msg.msg.equals("PING"))
 		{
@@ -213,10 +213,10 @@ public class P2PCache implements Application {
 		else
 		{
 			
-			System.out.println("ENTERED ELSE");
+			//System.out.println("ENTERED ELSE");
 			if(msg.wantResponse)
 			{
-				System.out.println("ACTUAL PLACE");
+				//System.out.println("ACTUAL PLACE");
 				String content=null;
 			    content=fetchData(msg.msg);
 			System.out.println("REQ: I GOT YOUR MESSAGE: AND YOU ARE: "+msg.nodeHandle);
@@ -270,7 +270,7 @@ public class P2PCache implements Application {
     		try {
 				YouTubeQuery query = new YouTubeQuery(new URL("http://gdata.youtube.com/feeds/api/videos"));
 				
-				System.out.println(keyword);
+				//System.out.println(keyword);
 				query.setFullTextQuery(keyword);
 				
 				YouTubeService service=new YouTubeService("YouTube Grab");
@@ -278,7 +278,7 @@ public class P2PCache implements Application {
 				temp.append("<?xml version='1.0' encoding='ISO-8859-1'?>");
 				temp.append("<videoCollection>");
 				for(VideoEntry videoEntry : feed.getEntries() ) {
-					System.out.println("\n");
+					//System.out.println("\n");
 					temp.append("<videos>\n");
 					 YouTubeMediaGroup mediaGroup = videoEntry.getMediaGroup();
 					 
@@ -324,7 +324,7 @@ public class P2PCache implements Application {
 				buffer.append((temp));
 			}	
 			content=buffer.toString();
-    		System.out.println("CONTENT:   "+content);
+    		//System.out.println("CONTENT:   "+content);
     		} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
