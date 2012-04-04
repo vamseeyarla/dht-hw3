@@ -30,15 +30,18 @@ DB db;
 		
 		if(db.checkSearchKeyExists(keyword))
 		{
-			System.out.println("SEARCH KEY EXISTS");
+			System.err.println("Query for "+keyword+" resulted in a cache HIT");
+			
 			SearchData data=db.retrieveData(keyword);
 			return data.Data;
 		}
 		else
 		{
-			System.out.println("SEARCH KEY NOT EXISTS");
+			System.err.println("Query for "+keyword+" resulted in a cache MISS");
+			
 		if(nodeMainClass.query.containsKey(keyword))
 		{
+			
 			ArrayList<Socket> reqs=nodeMainClass.query.get(keyword);
 			reqs.add(req);
 			nodeMainClass.query.put(keyword, reqs);
