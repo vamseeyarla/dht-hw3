@@ -178,11 +178,11 @@ public class P2PCache implements Application {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			/*
+			
 			Id temp=node_factory.nidFactory.generateNodeId();
 			System.out.println("Sending PING to "+temp);
-			sendMessage(temp,null,"PING",true);
-			*/
+			sendMessage(temp,null,"PING",true,null);
+			
 		}
 	}
 	
