@@ -42,7 +42,7 @@ public class YouTubeSearch extends HttpServlet{
 
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("Vamsee");
+		//System.out.println("Vamsee");
 		
 		PrintWriter out =response.getWriter();
 		openingPage(out);
@@ -144,7 +144,7 @@ public class YouTubeSearch extends HttpServlet{
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		Document dom;
 		try {
-			System.out.println("HAI SERVER");
+			//System.out.println("HAI SERVER");
 
 			//Using factory get an instance of document builder
 			DocumentBuilder db = dbf.newDocumentBuilder();
@@ -159,7 +159,7 @@ public class YouTubeSearch extends HttpServlet{
 				  
 				 
 				  
-				  System.out.println(nodes.item(i).getNodeName());
+				  //System.out.println(nodes.item(i).getNodeName());
 			 
 				  Node first_node =(Node) nodes.item(i);
 				 
@@ -180,8 +180,7 @@ public class YouTubeSearch extends HttpServlet{
 	                    Element LinkElement = (Element)LinkList.item(0);
 
 	                    NodeList textLinkList = LinkElement.getChildNodes();
-	                    System.out.println("Link : " + 
-	                           ((Node)textLinkList.item(0)).getNodeValue().trim());
+	                    //System.out.println("Link : " + 	                           ((Node)textLinkList.item(0)).getNodeValue().trim());
 	                    
 	                 //   out.println("Link : " + ((Node)textLinkList.item(0)).getNodeValue().trim());
 	                    String link=((Node)textLinkList.item(0)).getNodeValue().trim();
@@ -200,8 +199,7 @@ public class YouTubeSearch extends HttpServlet{
 	                    Element firstNameElement = (Element)firstNameList.item(0);
 
 	                    NodeList textFNList = firstNameElement.getChildNodes();
-	                    System.out.println("Uploader : " + 
-	                           ((Node)textFNList.item(0)).getNodeValue().trim());
+	                    //System.out.println("Uploader : " + 	                           ((Node)textFNList.item(0)).getNodeValue().trim());
 	                    out.println("Uploader : " + 
 		                           ((Node)textFNList.item(0)).getNodeValue().trim());
 	                    out.println("</td>"); 
@@ -214,8 +212,7 @@ public class YouTubeSearch extends HttpServlet{
 	                    Element lastNameElement = (Element)lastNameList.item(0);
 
 	                    NodeList textLNList = lastNameElement.getChildNodes();
-	                    System.out.println("Duration : " + 
-	                           ((Node)textLNList.item(0)).getNodeValue().trim());
+	                    //System.out.println("Duration : " + 	                           ((Node)textLNList.item(0)).getNodeValue().trim());
 	                    out.println("Duration : " + 
 		                           ((Node)textLNList.item(0)).getNodeValue().trim());
 	                    out.println("</td>"); 
@@ -229,8 +226,7 @@ public class YouTubeSearch extends HttpServlet{
 	                    Element ageElement = (Element)ageList.item(0);
 
 	                    NodeList textAgeList = ageElement.getChildNodes();
-	                    System.out.println("Description : " + 
-	                           ((Node)textAgeList.item(0)).getNodeValue().trim());
+	                    //System.out.println("Description : " + 	                           ((Node)textAgeList.item(0)).getNodeValue().trim());
 	                    out.println("Description : " + 
 	                           ((Node)textAgeList.item(0)).getNodeValue().trim());  
 	                    //------

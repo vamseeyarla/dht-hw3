@@ -53,7 +53,7 @@ DB db;
 			nodeMainClass.query.put(keyword, reqs);
 		}
 		Id temp=nodeMainClass.node_factory.getIdFromString(keyword);
-		System.out.println("GOING TO SEND MSG");
+		////System.out.println("GOING TO SEND MSG");
 		nodeMainClass.sendMessage(temp,null,keyword,true,null);
 		
 		return null;
