@@ -17,10 +17,17 @@ import java.net.Socket;
 import java.net.SocketAddress;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.apache.tools.ant.taskdefs.Mkdir;
+
+import com.google.gdata.client.youtube.YouTubeQuery;
+import com.google.gdata.client.youtube.YouTubeService;
+import com.google.gdata.data.youtube.VideoEntry;
+import com.google.gdata.data.youtube.VideoFeed;
+import com.google.gdata.data.youtube.YouTubeMediaGroup;
 
 import rice.p2p.commonapi.Application;
 import rice.p2p.commonapi.Endpoint;
@@ -166,7 +173,7 @@ public class P2PCache implements Application {
 		{
 			try {
 			//	Thread.sleep(3000);
-				Thread.sleep(300000000);
+				Thread.sleep(3000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -259,7 +266,52 @@ public class P2PCache implements Application {
     	else
     	{
     		String content="vamsee";
+    		StringBuffer temp=new StringBuffer();
+    		try {
+				YouTubeQuery query = new YouTubeQuery(new URL("http://gdata.youtube.com/feeds/api/videos"));
+				
+				System.out.println(keyword);
+				query.setFullTextQuery(keyword);
+				
+				YouTubeService service=new YouTubeService("YouTube Grab");
+				VideoFeed feed=service.query(query, VideoFeed.class);
+				temp.append("<?xml version='1.0' encoding='ISO-8859-1'?>");
+				temp.append("<videoCollection>");
+				for(VideoEntry videoEntry : feed.getEntries() ) {
+					System.out.println("\n");
+					temp.append("<videos>\n");
+					 YouTubeMediaGroup mediaGroup = videoEntry.getMediaGroup();
+					 
+					 temp.append("<uploader>\n");
+					 temp.append(mediaGroup.getUploader().replaceAll("&", "&amp;"));
+					 temp.append("</uploader>\n");
+					 
+					 temp.append("<duration>\n");
+					 temp.append(mediaGroup.getDuration());
+					 temp.append("</duration>\n");
+					
+					 temp.append("<description>\n");
+					 temp.append(mediaGroup.getDescription().getPlainTextContent().replaceAll("&", "&amp;"));
+					 temp.append("</description>\n");
+					 
+					 temp.append("<link>\n");
+					// temp.append(mediaGroup.getPlayer().getUrl());
+					 // data='"+mediaGroup.getPlayer().getUrl()+"'
+					 temp.append(mediaGroup.getPlayer().getUrl().substring(0,mediaGroup.getPlayer().getUrl().indexOf("&feature=youtube_gdata")).replaceAll("&", "&amp;"));
+					 temp.append("</link>\n"); 
+					 
+					 temp.append("</videos>\n");
+				}
+				temp.append("</videoCollection>\n");
+				content=temp.toString();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				content=null;
+			}
     		//FETCH DATA FROM YOUTUBE API
+    		
+    		/*
     		try {
 			URLConnection connection=new URL("http://gdata.youtube.com/feeds/api/videos?v=1&q="+keyword).openConnection();
 			BufferedReader br=new BufferedReader(new InputStreamReader(connection.getInputStream()));
@@ -268,7 +320,8 @@ public class P2PCache implements Application {
 				
 			while((temp=br.readLine())!=null)
 			{
-				buffer.append(temp);
+				
+				buffer.append((temp));
 			}	
 			content=buffer.toString();
     		System.out.println("CONTENT:   "+content);
@@ -277,9 +330,13 @@ public class P2PCache implements Application {
 				e.printStackTrace();
 				content=null;
 			} 
+    		//content=content.replaceFirst("encoding='UTF-8'", "encoding='iso-8859-1'");
     		
-    		client.db.addSearchData(keyword, content);
+    		
     		return content;	
+    	*/
+			client.db.addSearchData(keyword, content);
+			return content;
     	}
     }
 	
