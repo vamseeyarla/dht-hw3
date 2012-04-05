@@ -260,11 +260,15 @@ public class P2PCache implements Application {
     {
     	if(client.db.checkSearchKeyExists(keyword))
 		{
+    		System.err.println("Query for "+keyword+" resulted in a cache HIT");
+			
 			SearchData data=client.db.retrieveData(keyword);
 			return data.Data;
 		}
     	else
     	{
+    		System.err.println("Query for "+keyword+" resulted in a cache MISS");
+			
     		String content="vamsee";
     		StringBuffer temp=new StringBuffer();
     		try {

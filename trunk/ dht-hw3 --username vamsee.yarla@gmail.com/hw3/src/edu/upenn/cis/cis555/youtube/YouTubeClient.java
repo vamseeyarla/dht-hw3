@@ -21,23 +21,29 @@ DB db;
 	public YouTubeClient(String BDPath)
 	{
 		this.BDPath=BDPath;
-		db=DB.getInstance(BDPath);
-		
+		db=DB.getInstance(BDPath);	
 	}
 	
 	public String searchVideos(String keyword)
 	{
 		
+		System.out.println("Reached Here!");
+		System.out.println(db);
+		if(db==null)
+		{
+			System.out.println("Problem with Berkeley DB");
+			return "Problem with Berkeley DB";
+		}
 		if(db.checkSearchKeyExists(keyword))
 		{
-			System.err.println("Query for "+keyword+" resulted in a cache HIT");
+			System.err.println("Query for "+keyword+" resulted in a cache HIT (Starting Node)");
 			
 			SearchData data=db.retrieveData(keyword);
 			return data.Data;
 		}
 		else
 		{
-			System.err.println("Query for "+keyword+" resulted in a cache MISS");
+			System.err.println("Query for "+keyword+" resulted in a cache MISS (Starting Node)");
 			
 		if(nodeMainClass.query.containsKey(keyword))
 		{
