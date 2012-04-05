@@ -36,9 +36,11 @@ public class NodeEndConnection extends Thread{
 			     System.out.println("DATA RECEIVED");
 			    
 			     BufferedReader br=new BufferedReader(new InputStreamReader(req.getInputStream()));
+			     String temp=null;  
+			     temp=br.readLine();
 			     
-			     String temp=null;   
-			     if((temp=br.readLine())!=null)
+			    while(!br.readLine().equalsIgnoreCase(""));
+			     if((temp)!=null)
 			     {
 			    	 System.out.println(temp);
 			    	 String split []=new String[3];
@@ -46,6 +48,7 @@ public class NodeEndConnection extends Thread{
 			    	 split[1]=URLDecoder.decode(split[1]);
 			    	 if(split[1].length()<16 || !split[1].substring(0,16).equalsIgnoreCase("/search?keyword="))
 			    	 {
+			    		// System.out.println("NON KEYWORD");
 			    			OutputStream out=req.getOutputStream();
 							out.write("HTTP/1.1 404 NOTFOUND\n".getBytes());
 							out.write("Server: P2PServer+DHT\n".getBytes());
@@ -60,16 +63,33 @@ public class NodeEndConnection extends Thread{
 			    	 }
 			    	 else
 			    	 {
+			    		// System.out.println("KEYWORD");
 			    		 String keyword=split[1].substring(16);
-			    		 System.out.println("KEYWORD: "+keyword);
+			    		// System.out.println("KEYWORD: "+keyword);
 			    		 nodeMainClass.client.req=req;
+			    		// System.out.println("STEP1");
 			    		 String result=nodeMainClass.client.searchVideos(keyword);
+			    		// System.out.println("STEP2");
 			    		 if(result==null)
 			    		 {
-			    			 System.out.println("Control Passes to Search!!");
+			    			// System.out.println("Control Passes to Search!!");
+			    		 }
+			    		 else if(result.equalsIgnoreCase("Problem with Berkeley DB"))
+			    		 {
+			    			 System.out.println("STEP3");
+			    			 	OutputStream out=req.getOutputStream();
+								out.write("HTTP/1.1 500 SERVER PROBLEM\n".getBytes());
+								out.write("Server: P2PServer+DHT\n".getBytes());
+								out.write(("Content-Length: "+result.length()+"\n").getBytes());
+								out.write("Content-Type: text/xml\n".getBytes());
+								out.write("Connection: close\n".getBytes());
+								out.write("\n".getBytes());
+								out.write(result.getBytes());
+				    			req.close();
 			    		 }
 			    		 else
 			    		 {
+			    			 System.out.println("STEP3");
 			    			 	OutputStream out=req.getOutputStream();
 								out.write("HTTP/1.1 200 OK\n".getBytes());
 								out.write("Server: P2PServer+DHT\n".getBytes());
@@ -107,6 +127,7 @@ public class NodeEndConnection extends Thread{
 			 }
 			 catch(Exception e)
 			 {
+				 System.out.println(e.toString());
 				 System.out.println("ERROR IN SERVER SOCKET!! TERMINATED!");
 				 System.exit(1);
 			 }
