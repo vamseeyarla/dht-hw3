@@ -19,19 +19,28 @@ import rice.p2p.commonapi.Id;
  * @author VamseeKYarlagadda
  *
  */
+/*
+ * Class to search for give keyword in cache and if present return it
+ * otherwise, fetch from internet and save it cache and send it
+ */
 public class YouTubeClient {
 String BDPath;
 P2PCache nodeMainClass;
 Socket req;
 public DB db;
 
-
+/*
+ * Construtor that takes string for Berkeley DB location
+ */
 	public YouTubeClient(String BDPath)
 	{
 		this.BDPath=BDPath;
 		db=DB.getInstance(BDPath);	
 	}
 	
+	/*
+	 * Method to look for given keyword in local DB(if present) and or from the Internet using YoutubeAPI 
+	 */
 	public String searchVideos(String keyword)
 	{
 		if(db==null)
@@ -91,69 +100,16 @@ public DB db;
 				content=temp.toString();
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				//e.printStackTrace();
 				content=null;
 			}
     		//FETCH DATA FROM YOUTUBE API
     		
-    		/*
-    		try {
-			URLConnection connection=new URL("http://gdata.youtube.com/feeds/api/videos?v=1&q="+keyword).openConnection();
-			BufferedReader br=new BufferedReader(new InputStreamReader(connection.getInputStream()));
-			StringBuffer buffer=new StringBuffer();
-			String temp;
-				
-			while((temp=br.readLine())!=null)
-			{
-				
-				buffer.append((temp));
-			}	
-			content=buffer.toString();
-    		//System.out.println("CONTENT:   "+content);
-    		} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				content=null;
-			} 
-    		//content=content.replaceFirst("encoding='UTF-8'", "encoding='iso-8859-1'");
-    		
-    		
-    		return content;	
-    	*/
-			db.addSearchData(keyword, content);
+    		db.addSearchData(keyword, content);
 			return content;
     	}
 		
-		
-		/*
-		System.out.println("Reached Here!");
-		System.out.println(db);
-		if(db==null)
-		{
-			System.out.println("Problem with Berkeley DB");
-			return "Problem with Berkeley DB";
-		}
-		if(db.checkSearchKeyExists(keyword))
-		{
-			System.err.println("Query for "+keyword+" resulted in a cache HIT (Starting Node)");
 			
-			SearchData data=db.retrieveData(keyword);
-			return data.Data;
-		}
-		else
-		{
-			System.err.println("Query for "+keyword+" resulted in a cache MISS (Starting Node)");
-			
-		
-		
-				
-		return null;
-		}
-		
-		
-	
-	
-	*/
 	}
 	
 }

@@ -23,6 +23,10 @@ import rice.pastry.standard.RandomNodeIdFactory;
  * @author Vamsee K. Yarlagadda
  *
  */
+/*
+ * Class to hanle all the nodes strucure and message forwarding
+ * 
+ */
 public class NodeFactory {
 	
 	Environment env;
@@ -32,15 +36,25 @@ public class NodeFactory {
 	int createdCount = 0;
 	int port;
 	
+	/*
+	 * Construcotr that takes port and make use of default environmnet to create a node
+	 */
 	NodeFactory(int port) {
 		this(new Environment(), port);
 	}	
 	
+	/*
+	 * Construcotr that takes port and the boot port and IP address and also 
+	 * make use of default environmnet to create a node
+	 */
 	NodeFactory(int port, InetSocketAddress bootPort) {
 		this(port);
 		bootHandle = factory.getNodeHandle(bootPort);
 	}
 	
+	/*
+	 * Construcotr that takes port and the environmnet to create a node
+	 */
 	NodeFactory(Environment env, int port) {
 		this.env = env;
 		this.port = port;
@@ -53,6 +67,10 @@ public class NodeFactory {
 		
 	}
 	
+	/*
+	 * Method to create new node with the help of node handles that got created using constructor and puts it in a ring
+	 * structure.
+	 */
 	public Node getNode() {
 		try {
 			synchronized (this) {
@@ -86,15 +104,24 @@ public class NodeFactory {
 		}
 	}
 	
+	/*
+	 * Method to shutdown a node
+	 */
 	public void shutdownNode(Node n) {
 		((PastryNode) n).destroy();
 		
 	}
 	
+	/*
+	 * Method to take input bytes and give an ID out of it
+	 */
 	public Id getIdFromBytes(byte[] material) {
 		return Id.build(material);
 	}
 	
+	/*
+	 * Method to take input string and give an ID out of it
+	 */
 	public Id getIdFromString(String keyString) {
 		MessageDigest md = null;
 		try {

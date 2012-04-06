@@ -4,15 +4,12 @@
 package edu.upenn.cis.cis555.youtube;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URLDecoder;
 import java.util.ArrayList;
-
 import rice.p2p.commonapi.Id;
 import rice.p2p.commonapi.Node;
 
@@ -20,12 +17,26 @@ import rice.p2p.commonapi.Node;
  * @author VamseeKYarlagadda
  *
  */
+
+/*
+ * Class that provides interface for making itself accessable to servlets requesting for keyword.
+ */
 public class NodeEndConnection extends Thread{
 
 	int Daemon_Port;
 	P2PCache nodeMainClass;
 	Node node;
 	
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Thread#run()
+	 * The program runs in a infnite while loop
+	 * as it waits for incoming connections to reach the server
+	 * as soon as it receives the message;
+	 * it saves the keyword, socket pair in the hash map
+	 * and proceeds to execute the sending message to apporpriate node for handling
+	 * 
+	 */
 	
 	public void run() {
 		
@@ -35,7 +46,7 @@ public class NodeEndConnection extends Thread{
 			 while(true)
 			 {
 			     Socket req=serSocket.accept();
-			     System.out.println("DATA RECEIVED");
+			     //System.out.println("DATA RECEIVED");
 			    
 			     BufferedReader br=new BufferedReader(new InputStreamReader(req.getInputStream()));
 			     String temp=null;  
@@ -44,7 +55,7 @@ public class NodeEndConnection extends Thread{
 			    while(!br.readLine().equalsIgnoreCase(""));
 			     if((temp)!=null)
 			     {
-			    	 System.out.println(temp);
+			    	 //System.out.println(temp);
 			    	 String split []=new String[3];
 			    	 split=temp.split(" ");
 			    	 split[1]=URLDecoder.decode(split[1]);
@@ -68,7 +79,7 @@ public class NodeEndConnection extends Thread{
 			    		// System.out.println("KEYWORD");
 			    		 String keyword=split[1].substring(16);
 			    		 keyword=URLDecoder.decode(keyword);
-			    		 System.out.println("KEYWORD: "+keyword);
+			    		 //System.out.println("KEYWORD: "+keyword);
 			    	
 			    		// System.out.println("STEP1");
 			    		
@@ -92,7 +103,7 @@ public class NodeEndConnection extends Thread{
 			    		 Id tempid=nodeMainClass.node_factory.getIdFromString(keyword);
 			    		 nodeMainClass.sendMessage(tempid,null,keyword,true,null);
 			    		 
-			    		 System.out.println("RETURNED TO DAEMON!");
+			    		 //System.out.println("RETURNED TO DAEMON!");
 			    	 }
 			     }
 			     else
@@ -119,7 +130,7 @@ public class NodeEndConnection extends Thread{
 			 }
 			 catch(Exception e)
 			 {
-				 System.out.println(e.toString());
+				 //System.out.println(e.toString());
 				 System.out.println("ERROR IN SERVER SOCKET!! TERMINATED!");
 				 System.exit(1);
 			 }

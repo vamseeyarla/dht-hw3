@@ -1,34 +1,13 @@
 package edu.upenn.cis.cis555.youtube;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
+
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.net.Inet4Address;
 import java.net.InetSocketAddress;
-import java.net.MalformedURLException;
-import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketAddress;
-import java.net.URL;
-import java.net.URLConnection;
-import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import org.apache.tools.ant.taskdefs.Mkdir;
-
-import com.google.gdata.client.youtube.YouTubeQuery;
-import com.google.gdata.client.youtube.YouTubeService;
-import com.google.gdata.data.youtube.VideoEntry;
-import com.google.gdata.data.youtube.VideoFeed;
-import com.google.gdata.data.youtube.YouTubeMediaGroup;
-
 import rice.p2p.commonapi.Application;
 import rice.p2p.commonapi.Endpoint;
 import rice.p2p.commonapi.Id;
@@ -37,6 +16,9 @@ import rice.p2p.commonapi.Node;
 import rice.p2p.commonapi.NodeHandle;
 import rice.p2p.commonapi.RouteMessage;
 
+/*
+ * Class that handles the overall execution of the P2P system
+ */
 public class P2PCache implements Application {
 
 	 	int Local_Port = 0;
@@ -55,6 +37,12 @@ public class P2PCache implements Application {
 	/**
 	 * @param args
 	 */
+	    /*
+		 * Method to take input from user and process it accordingly.
+		 * It also crates a new node and puts on of the thread in daemon listening state
+		 * and one more thread in ping pong state.
+		 */
+	    
 	public void init(String[] args)
 	{
 		if(args.length<4 || args.length>5)
@@ -97,7 +85,7 @@ public class P2PCache implements Application {
 	    	}
 		catch(Exception e)
 		{
-			System.out.println(e.toString());
+			//System.out.println(e.toString());
 			System.out.println("Error in enetered Data: Check again!");
 			System.exit(1);
 		}
@@ -119,14 +107,18 @@ public class P2PCache implements Application {
 	 	}
 	 catch(Exception e)
 	 {
-		 System.out.println(e.toString());
+		 //System.out.println(e.toString());
 		 System.out.println("Error in creating Socket with local port mentioned! Program terminated!");
 		 System.exit(1);
 	 }
 	 
 	}
 	
-	
+	/*
+	 * Method that triggers the start of the daemon process listening to incoming
+	 *  connections from servlets and other external methods
+	 * 
+	 */
 	public void daemonStart()
 	{ 
 		 System.out.println("Starting to Listen on port daemon");
@@ -166,7 +158,10 @@ public class P2PCache implements Application {
 		nodeMainClass.pingPongService();
 	}
 
-	
+	/*
+	 * Ping Service to make sure all clients are running in the syatem
+	 * happens every 3 seconds.
+	 */
 	public void pingPongService()
 	{
 		while(true)
@@ -176,7 +171,7 @@ public class P2PCache implements Application {
 				Thread.sleep(3000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+			//	e.printStackTrace();
 			}
 			
 			Id temp=node_factory.nidFactory.generateNodeId();
@@ -187,6 +182,10 @@ public class P2PCache implements Application {
 	}
 	
 	
+	/*
+	 * Method to send messages around the p2p network based on the method and ID given to the function.
+	 * It make use of message format class to frame message and direct it around network
+	 */
 	
 	public void sendMessage(Id idToSendTo, NodeHandle nodeHandle, String msgToSend,boolean wantResponse, String msgContent)
 	{
@@ -195,6 +194,11 @@ public class P2PCache implements Application {
 		//System.out.println("MSG SENT TO: "+idToSendTo);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see rice.p2p.commonapi.Application#deliver(rice.p2p.commonapi.Id, rice.p2p.commonapi.Message)
+	 * Methods to accept messages from incoming req's from other nodes and process them
+	 */
 	@Override
 	public void deliver(Id id, Message msgx) {
 		
@@ -221,12 +225,12 @@ public class P2PCache implements Application {
 				//System.out.println("ACTUAL PLACE");
 				String content=null;
 			    content=client.searchVideos(msg.msg);
-			System.out.println("REQ: I GOT YOUR MESSAGE: AND YOU ARE: "+msg.nodeHandle);
+			//System.out.println("REQ: I GOT YOUR MESSAGE: AND YOU ARE: "+msg.nodeHandle);
 			sendMessage(null,msg.nodeHandle,msg.msg,false,content);
 			}
 			else
 			{
-				System.out.println("RES: I GOT YOUR MESSAGE: AND YOU ARE: "+msg.nodeHandle);
+				//System.out.println("RES: I GOT YOUR MESSAGE: AND YOU ARE: "+msg.nodeHandle);
 				if(query.containsKey(msg.msg))
 				{
 					ArrayList<Socket> socs=query.remove(msg.msg);

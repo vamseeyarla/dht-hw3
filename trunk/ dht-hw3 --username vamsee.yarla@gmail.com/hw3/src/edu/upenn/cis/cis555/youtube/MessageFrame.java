@@ -3,9 +3,6 @@
  */
 package edu.upenn.cis.cis555.youtube;
 
-import java.util.Date;
-
-
 import rice.p2p.commonapi.Message;
 import rice.p2p.commonapi.NodeHandle;
 
@@ -13,6 +10,11 @@ import rice.p2p.commonapi.NodeHandle;
 /**
  * @author VamseeKYarlagadda
  *
+ */
+/*
+ * Class that encapsulates the basic message that will be saved; 
+ * for each keyword, the data corresponding to it gets stored.
+ * Used to rotate this class round network for communication
  */
 public class MessageFrame implements Message{
 

@@ -41,6 +41,12 @@ import rice.p2p.util.XMLParser;
  */
 public class YouTubeSearch extends HttpServlet{
 
+	/*
+	 * (non-Javadoc)
+	 * @see javax.servlet.http.HttpServlet#doGet(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+	 	Method to hanlde a  GET requests
+	 	displays search form to user
+	 */
 	public void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		//System.out.println("Vamsee");
@@ -51,6 +57,9 @@ public class YouTubeSearch extends HttpServlet{
 		
 	}
 	
+	/*
+	 * General format to display opening search interface.
+	 */
 	public void openingPage(PrintWriter out)
 	{
 		out.println("<HTML>");
@@ -86,6 +95,11 @@ public class YouTubeSearch extends HttpServlet{
 		out.println("</HTML>");
 	}
 	
+	/*
+	 * Method to handle all Post requests.
+	 * The search data will be passed as post data and retrived and the ID is calculated and sent to loop around
+	 * the P2P system. and display the result.
+	 * */
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		
@@ -107,10 +121,7 @@ public class YouTubeSearch extends HttpServlet{
 		
 		
 		InputStream ir=(conn.getInputStream());
-		//BufferedReader br=new BufferedReader(new InputStreamReader(conn.getInputStream()));
-		//System.out.println(br.readLine());
 			
-		
 		out.println("<html>");
 		out.println("<head>");
 		out.println("<title>");
@@ -141,6 +152,10 @@ public class YouTubeSearch extends HttpServlet{
 		out.println("</html>");
 	}
 	
+	/*
+	 * 
+	 * Class to print out the XML input to HTML output to the user as search results.
+	 */
 	public void parseXML(InputStream ir,PrintWriter out){
 		//get the factory
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -243,11 +258,11 @@ public class YouTubeSearch extends HttpServlet{
 			  }
 
 		}catch(ParserConfigurationException pce) {
-			pce.printStackTrace();
+			//pce.printStackTrace();
 		}catch(SAXException se) {
-			se.printStackTrace();
+			//se.printStackTrace();
 		}catch(IOException ioe) {
-			ioe.printStackTrace();
+			//ioe.printStackTrace();
 		}
 		}
 	

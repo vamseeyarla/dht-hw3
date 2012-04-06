@@ -1,15 +1,8 @@
 package edu.upenn.cis.cis555.youtube;
 
 import java.io.File;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-
 import com.sleepycat.je.Environment;
 import com.sleepycat.je.EnvironmentConfig;
-import com.sleepycat.persist.EntityCursor;
 import com.sleepycat.persist.EntityStore;
 import com.sleepycat.persist.PrimaryIndex;
 import com.sleepycat.persist.StoreConfig;
@@ -108,24 +101,6 @@ public class DB {
 			return false;
 		}
 		
-		/*
-		
-		String[] temp={"hi","Kri"};
-		UserData x=new UserData("vamsee","krish",temp);
-		
-		UserData y=new UserData("manoj","krishna yarlagadda",temp);
-		UserIndex.put(y);
-		ChannelIndex.put(x);
-	
-		UserIndex.delete("manoj");
-		ChannelIndex.delete("vamsee");
-		
-		UserData result=UserIndex.get("manoj");
-		
-		System.out.println(result.Password);
-		result=ChannelIndex.get("vamsee");
-		System.out.println(result.Password);
-	*/	
 	}
 	
 
@@ -152,16 +127,10 @@ public class DB {
 		
 		}
 	
-	/*
-	 * Function to autogenerate a number for the next channel ID and using this vaue
-	 * the CHannelData class can actually save the data Uniquely.
-	 * 
-	 */
 
-	
 	/*
-	 * Function to take Name, Username, password as input and saves it accrodingly in the database.
-	 * The checking for existing username is already done by previous methods. 
+	 * Function to take Keyword and data as input and saves it accrodingly in the database.
+	 * The checking for existing keyword is already done by previous methods. 
 	 * This gets activated only when everything is unique.
 	 * 
 	 * 
@@ -185,8 +154,8 @@ public class DB {
 	
 	
 	/*
-	 * Function to check if the user exists in the ystem or not
-	 * if so, returns an object of UserData with complete info about the users
+	 * Function to check if the keyword exists in the system or not
+	 * if so, returns an object of SearchData with complete info about the users
 	 * 
 	 */
 	
@@ -204,8 +173,8 @@ public class DB {
 	}
 	
 	/*
-	 * Function to delete a channel from DB if a user has requested to do so.
-	 * It deletes the channel along with their XPaths and commits the DB
+	 * Function to delete a keyword from DB if a user has requested to do so.
+	 * It deletes the keyword along with their data and commits the DB
 	 * 
 	 */
 	
@@ -271,49 +240,7 @@ public class DB {
 		}
 	}
 	
-	/*
-	 * Function to delete crawled data from the database.
-	 * Employed by the method called by the admin programmer
-	 * 
-	 */
-
 	
-	/*
-	 * Function to update the values in the DB. The correspoding XPaths and all
-	 * the matching URLs with it.
-	 * 
-	 */
-
-	
-	/*
-	 * Function to retrieve ChannelData using the identifier ID.
-	 * Returns an ChannelData object out.
-	 * 
-	 */
-	
-	/*
-	 * Function to update crawled data in the DB. updated in the crawl index
-	 * It also save the timestamp of the document at which it was retrived.
-	 * 
-	 */
-
-	
-	/*
-	 * Function to check whether the URL has been crawled before
-	 * or not. If so, retrives the data of it rather than fetchcing it agian form the browser. 
-	 * 
-	 */
-
-	
-	/*
-	 * Function to returve the timestamp of the URL. Used for IF-mOdified-Since header
-	 * 
-	 */
-
-
-	/*
-	 * Function to retrieve the crawled data from the DB if it has already been crawled.
-	 */
 	
 
 }
