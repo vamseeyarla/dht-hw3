@@ -1,0 +1,43 @@
+Full name: Vamsee K. Yarlagadda
+SEAS login: vamsee
+
+Description of features implemented:
+
+P2PCache - Class to perform all tasks of a node.
+SearchData - Class to store all the fetched data in Berkeley DB
+YouTubeClient - Class to search for videos in cache and in network
+YouTubeSearch - Class for all servers to activate the servlet
+NodeFactory - Class that performs connection to nodes
+NodeEndConnection - Class that keeps listening to incoming servlet connections
+MessageFrame - Class to frame the message to be sent across nodes
+delete - Class to delete all pre-fetched data in Berkeley DB
+DBClose -  Class to close all connections with Berkeley DB
+DB - Class to initiate, and access Berkeley DB
+AllTests -  Class to run all JUnit tests
+DBTest -  Class t check the execution of fetching data and Berkeley DB
+WebServiceTest - Class to check the proper functioning of servlet
+
+Extra credits claimed:
+6.1: Implementation of BerkeleyDB Store
+
+List of source files included (consider using `find src | grep java`)
+  src/edu/upenn/cis/cis555/youtube/P2PCache.java
+  src/edu/upenn/cis/cis555/youtube/SearchData.java
+  src/edu/upenn/cis/cis555/youtube/YouTubeClient.java
+  src/edu/upenn/cis/cis555/youtube/YouTubeSearch.java
+  src/edu/upenn/cis/cis555/youtube/NodeFactory.java
+  src/edu/upenn/cis/cis555/youtube/NodeEndConnection.java
+  src/edu/upenn/cis/cis555/youtube/DB.java
+  src/edu/upenn/cis/cis555/youtube/DBClose.java
+  src/edu/upenn/cis/cis555/youtube/delete.java
+  src/edu/upenn/cis/cis555/youtube/MessageFrame.java
+  src/test/edu/upenn/cis/cis555/hw3/AllTests.java
+  src/test/edu/upenn/cis/cis555/hw3/DBTest.java
+  src/test/edu/upenn/cis/cis555/hw3/WebServiceTest.java
+  src/WEB-INF/web.xml
+
+Outside sources used:
+  None
+
+Special instructions for building or running:
+None
