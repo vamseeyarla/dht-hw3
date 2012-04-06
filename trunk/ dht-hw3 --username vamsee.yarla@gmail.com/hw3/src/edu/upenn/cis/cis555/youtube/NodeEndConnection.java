@@ -11,7 +11,9 @@ import java.io.OutputStreamWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URLDecoder;
+import java.util.ArrayList;
 
+import rice.p2p.commonapi.Id;
 import rice.p2p.commonapi.Node;
 
 /**
@@ -65,41 +67,31 @@ public class NodeEndConnection extends Thread{
 			    	 {
 			    		// System.out.println("KEYWORD");
 			    		 String keyword=split[1].substring(16);
-			    		// System.out.println("KEYWORD: "+keyword);
-			    		 nodeMainClass.client.req=req;
+			    		 keyword=URLDecoder.decode(keyword);
+			    		 System.out.println("KEYWORD: "+keyword);
+			    	
 			    		// System.out.println("STEP1");
-			    		 String result=nodeMainClass.client.searchVideos(keyword);
-			    		// System.out.println("STEP2");
-			    		 if(result==null)
-			    		 {
-			    			// System.out.println("Control Passes to Search!!");
-			    		 }
-			    		 else if(result.equalsIgnoreCase("Problem with Berkeley DB"))
-			    		 {
-			    			 System.out.println("STEP3");
-			    			 	OutputStream out=req.getOutputStream();
-								out.write("HTTP/1.1 500 SERVER PROBLEM\n".getBytes());
-								out.write("Server: P2PServer+DHT\n".getBytes());
-								out.write(("Content-Length: "+result.length()+"\n").getBytes());
-								out.write("Content-Type: text/xml\n".getBytes());
-								out.write("Connection: close\n".getBytes());
-								out.write("\n".getBytes());
-								out.write(result.getBytes());
-				    			req.close();
-			    		 }
-			    		 else
-			    		 {
-			    			 System.out.println("STEP3");
-			    			 	OutputStream out=req.getOutputStream();
-								out.write("HTTP/1.1 200 OK\n".getBytes());
-								out.write("Server: P2PServer+DHT\n".getBytes());
-								out.write(("Content-Length: "+result.length()+"\n").getBytes());
-								out.write("Content-Type: text/xml\n".getBytes());
-								out.write("Connection: close\n".getBytes());
-								out.write("\n".getBytes());
-								out.write(result.getBytes());
-				    			req.close();
-			    		 }
+			    		
+			    		 
+			    		// String result=nodeMainClass.searchHighVideos(keyword);
+			    		 
+			    		 	if(nodeMainClass.query.containsKey(keyword))
+			    			{
+			    				
+			    				ArrayList<Socket> reqs=nodeMainClass.query.get(keyword);
+			    				reqs.add(req);
+			    				nodeMainClass.query.put(keyword, reqs);
+			    			}
+			    			else
+			    			{
+			    				ArrayList<Socket> reqs=new ArrayList<Socket>();
+			    				reqs.add(req);
+			    				nodeMainClass.query.put(keyword, reqs);
+			    			}
+			    		 
+			    		 Id tempid=nodeMainClass.node_factory.getIdFromString(keyword);
+			    		 nodeMainClass.sendMessage(tempid,null,keyword,true,null);
+			    		 
 			    		 System.out.println("RETURNED TO DAEMON!");
 			    	 }
 			     }

@@ -10,6 +10,7 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.URLEncoder;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -40,7 +41,7 @@ import rice.p2p.util.XMLParser;
  */
 public class YouTubeSearch extends HttpServlet{
 
-	protected void doGet(HttpServletRequest request,
+	public void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		//System.out.println("Vamsee");
 		
@@ -95,6 +96,7 @@ public class YouTubeSearch extends HttpServlet{
 			openingPage(out);
 		}
 		keyword=keyword.trim();
+		keyword=URLEncoder.encode(keyword);
 		ServletConfig config = getServletConfig();
 		ServletContext context = config.getServletContext();
 		String cacheServer=context.getInitParameter("cacheServer");
