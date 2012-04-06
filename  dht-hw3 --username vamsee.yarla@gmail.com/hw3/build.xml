@@ -11,7 +11,7 @@
     <property name="test-classes.dir" location="${build.target.dir}${file.separator}test${file.separator}classes"/>
     <property name="test-lib.dir"     location="${build.target.dir}${file.separator}test${file.separator}lib"/>
     <property name="src.main.dir"  location="${build.dir}${file.separator}src${file.separator}"/>
-    <property name="inputlib.dir"  location="${shared.root}${file.separator}lib"/>
+    <property name="inputlib.dir"  location="${project.root}${file.separator}lib"/>
     <property name="src.test.dir"  location="${build.dir}${file.separator}src${file.separator}test"/>
     <property name="resources.dir" location="${build.dir}${file.separator}resources"/>
     <property name="conf.dir"      location="${build.dir}${file.separator}conf"/>
