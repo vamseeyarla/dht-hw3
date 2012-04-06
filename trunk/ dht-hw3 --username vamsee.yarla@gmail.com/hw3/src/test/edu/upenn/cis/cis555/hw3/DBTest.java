@@ -28,7 +28,6 @@ public class DBTest extends TestCase {
 	{
 		YouTubeClient client=new YouTubeClient("JEDB");
 		String result=client.searchVideos("youtube");
-		System.out.println(result);
 		assertEquals(true, (result.indexOf("videoCollection")!=-1));
 	
 	}
